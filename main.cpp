@@ -8,6 +8,8 @@ struct Values {
     float y;
     float width;
     float height;
+    bool active;
+    Color color;
 };
 
 //Constants Variables
@@ -20,27 +22,32 @@ Values value[maxValues];
 int shownValues = 5;
 int newValues = 0;
 
+int bubbleI=0;
+int bubbleJ=0;
+bool swapped =false;
+bool completed = false;
+
 float frameTime = 0.0;
 
-bool ValueBox1EM = false;
+int completedAnimI=0;
 
+bool sortingMode = false;
+
+// GUI Variables
+bool ValueBox1EM = false;
 int ListViewIndexSel;
 int ListViewIndexActive = -1;
 
 //Main Functions
 void InitGame();
-
 void UpdateGame();
-
 void DrawGame();
-
 void UnloadGame();
-
 void UpdateDrawFrame();
 
 //Other functions
 void shuffle();
-
+void completedAnimation();
 bool delay(float seconds);
 
 //Algorithms functions
@@ -72,22 +79,40 @@ void InitGame() {
         value[i].y = 300;
         value[i].width = rectSize;
         value[i].height = 0;
+        value[i].active = false;
+        value[i].color = BLACK;
     }
+    value[0].active=true;
 
     // Shuffle the values at the start of the program
     shuffle();
+
+    sortingMode = false;
+    completed=false;
+    completedAnimI=0;
 }
 
 //Update Game
 void UpdateGame() {
 
+    // Updates the frameTime variables incrementing it by the FrameTime of the program
+    frameTime += GetFrameTime();
+
     // TEST ONLY. Press space to sort, only for test
-    if (IsKeyPressed(KEY_SPACE)) {
-        // delay(5.0);
+   //  if (IsKeyPressed(KEY_SPACE)) {
+   //      bubbleI=0;
+   //      bubbleJ=0;
+   //      sortingMode = true;
+   // }
+
+    if (sortingMode==true && delay(1.0)) {
         bubbleSort();
     }
 
-    frameTime += GetFrameTime();
+    if (completed && delay(0.5)) {
+        completedAnimation();
+    }
+
 }
 
 //Draw game
@@ -101,7 +126,11 @@ void DrawGame() {
         Vector2 position = {value[i].x, value[i].y - value[i].height};
         Vector2 size = {value[i].width, value[i].height};
 
-        DrawRectangleV(position, size,RED);
+        if (value[i].active==true) {
+            DrawRectangleV(position, size,RED);
+        }else {
+            DrawRectangleV(position, size,value[i].color);
+        }
 
         // !! TO DELETE shows value of the rectangle's height
         DrawText(TextFormat("%.0f", value[i].height), value[i].x, value[i].y, 20,BLACK);
@@ -127,8 +156,14 @@ void DrawGame() {
     // Draws button to shuffle the rectangles
     if (GuiButton({300, 350, 150, 50}, "Shuffle")) {
         shuffle();
+        InitGame();
     }
 
+    if (GuiButton({500, 350, 150, 50}, "Sort")) {
+        bubbleI=0;
+        bubbleJ=0;
+        sortingMode=true;
+    }
 
     // TO DELETE, just for testing purpose
     DrawText(TextFormat("DeltaTime: %f", frameTime), 300, 600, 20, RED);
@@ -153,6 +188,14 @@ void shuffle() {
     }
 }
 
+void completedAnimation() {
+    if (completedAnimI<shownValues) {
+        value[completedAnimI].active=false;
+        value[completedAnimI].color=GREEN;
+    }
+    completedAnimI++;
+}
+
 // Adds a delay between swaps
 bool delay(float seconds) {
 
@@ -165,19 +208,32 @@ bool delay(float seconds) {
 
 
 void bubbleSort() {
-    bool swapped = false;
-    for (int i = 0; i < shownValues - 1; i++) {
-        for (int j = 0; j < shownValues - 1 - i; j++) {
-            if (value[j].height > value[j + 1].height) {
-                float temp = value[j].height;
-                value[j].height = value[j + 1].height;
-                value[j + 1].height = temp;
-                swapped = true;
-            }
+    if (bubbleI > shownValues - 1) {
+        sortingMode = false;
+        completed=true;
+        return;
+    }
+
+    if (bubbleJ < shownValues - 1 - bubbleI) {
+        if (value[bubbleJ].height > value[bubbleJ + 1].height) {
+            float temp = value[bubbleJ].height;
+            value[bubbleJ].height = value[bubbleJ + 1].height;
+            value[bubbleJ + 1].height = temp;
+            value[bubbleJ].active=false;
+            value[bubbleJ+1].active=true;
+            swapped = true;
         }
+        value[bubbleJ].active=false;
+        value[bubbleJ+1].active=true;
+        bubbleJ++;
+    } else {
         if (!swapped) {
-            break;
+            sortingMode = false;
+            completed=true;
+            return;
         }
         swapped = false;
+        bubbleJ = 0;
+        bubbleI++;
     }
 }
