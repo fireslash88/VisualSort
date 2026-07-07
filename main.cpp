@@ -98,18 +98,23 @@ void UpdateGame() {
     // Updates the frameTime variables incrementing it by the FrameTime of the program
     frameTime += GetFrameTime();
 
-    // TEST ONLY. Press space to sort, only for test
-   //  if (IsKeyPressed(KEY_SPACE)) {
-   //      bubbleI=0;
-   //      bubbleJ=0;
-   //      sortingMode = true;
-   // }
-
-    if (sortingMode==true && delay(1.0)) {
-        bubbleSort();
+    if (sortingMode==true && delay(0.1)) {
+        switch (ListViewIndexActive) {
+            case 0: {
+                bubbleSort();
+                break;
+            }
+            case 1: {
+                //selectionSort();
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
-    if (completed && delay(0.5)) {
+    if (completed && delay(0.2)) {
         completedAnimation();
     }
 
@@ -160,9 +165,11 @@ void DrawGame() {
     }
 
     if (GuiButton({500, 350, 150, 50}, "Sort")) {
-        bubbleI=0;
-        bubbleJ=0;
-        sortingMode=true;
+        if (ListViewIndexActive>-1) {
+            bubbleI=0;
+            bubbleJ=0;
+            sortingMode=true;
+        }
     }
 
     // TO DELETE, just for testing purpose
