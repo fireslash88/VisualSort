@@ -1,5 +1,5 @@
 cmake-build-debug/*
 .idea/*
-libraries/*
+src/libraries/*
 images/image2.png
 images/video1.mp4

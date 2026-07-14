@@ -13,10 +13,10 @@ It allows users to visualize how sorting algorithms work in a simple and effecti
 
 ## Why did I create this project?
 
-I'm a high school student, and this year we started learning C++. During our lessons, we also studied sorting algorithms.
+I'm a high school student, and this year we started learning C++. During our lessons, we also started studying sorting algorithms and I immediately got interested in it!
 
-I noticed that many of my classmates had trouble understanding how they worked. However, as soon as I showed them a visual representation of the algorithms, they seemed to understand them much more easily.
-For this reason, I decided to learn more about sorting algorithms and create this project to help people visualize them and understand them more quickly.
+I noticed that almost all of my classmates had trouble understanding how they worked. However, as soon as I showed them how the algorithm worked through visual representation, they seemed to understand them much more easily!
+For this reason, I decided to learn more about sorting algorithms and create this project to help people visualize them and understand them more quickly and I can even end up learning more about these algorithms!
 
 ---
 

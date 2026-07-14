@@ -24,12 +24,15 @@ endif()
 
 # Our Project
 
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME}
+        src/main.cpp
+        src/main.h
+)
 #set(raylib_VERBOSE 1)
 
 target_include_directories (${PROJECT_NAME} PRIVATE
-        libraries/raygui/src/
-        algorithms/
+        src/libraries/raygui/src/
+        src/algorithms/
 )
 
 target_link_libraries(${PROJECT_NAME} raylib)

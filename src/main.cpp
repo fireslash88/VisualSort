@@ -1,42 +1,24 @@
-#include <raylib.h>
+#include "raylib.h"
 #define RAYGUI_IMPLEMENTATION
-#include <raygui.h>
+#include "raygui.h"
+#include "main.h"
+#include "bubbleSort.h"
+#include "selectionSort.h"
 
 //Structures
-struct Values {
-    float x;
-    float y;
-    float width;
-    float height;
-    bool active;
-    Color color;
-};
 
 //Constants Variables
 const int screenWidth = 1080;
 const int screenHeight = 720;
-const int maxValues = 100;
+
+const float maxSpeed=0.1;
+const float minSpeed=2.0;
 
 //Global variables
-Values value[maxValues];
-int shownValues = 5;
-int newValues = 0;
-
-int bubbleI=0;
-int bubbleJ=0;
-bool swapped =false;
-bool completed = false;
-
-float frameTime = 0.0;
-
-int completedAnimI=0;
-
-bool sortingMode = false;
 
 // GUI Variables
 bool ValueBox1EM = false;
 int ListViewIndexSel;
-int ListViewIndexActive = -1;
 
 //Main Functions
 void InitGame();
@@ -51,7 +33,6 @@ void completedAnimation();
 bool delay(float seconds);
 
 //Algorithms functions
-void bubbleSort();
 
 int main() {
     InitWindow(screenWidth, screenHeight, "Template Raylib");
@@ -82,7 +63,6 @@ void InitGame() {
         value[i].active = false;
         value[i].color = BLACK;
     }
-    value[0].active=true;
 
     // Shuffle the values at the start of the program
     shuffle();
@@ -98,14 +78,14 @@ void UpdateGame() {
     // Updates the frameTime variables incrementing it by the FrameTime of the program
     frameTime += GetFrameTime();
 
-    if (sortingMode==true && delay(0.1)) {
+    if (sortingMode==true && delay(SliderSortingSpeed)) {
         switch (ListViewIndexActive) {
             case 0: {
                 bubbleSort();
                 break;
             }
             case 1: {
-                //selectionSort();
+                selectionSort();
                 break;
             }
             default: {
@@ -114,7 +94,7 @@ void UpdateGame() {
         }
     }
 
-    if (completed && delay(0.2)) {
+    if (completed && delay(SliderSortingSpeed)) {
         completedAnimation();
     }
 
@@ -151,7 +131,7 @@ void DrawGame() {
     }
 
     // Draws list view of all the algorithms available
-    GuiListView({700, 350, 200, 150}, "Bubble sort;Test2;Test3", &ListViewIndexSel, &ListViewIndexActive);
+    GuiListView({700, 350, 200, 150}, "Bubble sort;Selection Sort;Test3", &ListViewIndexSel, &ListViewIndexActive);
     if (ListViewIndexActive == -1) {
         DrawText(TextFormat("No algorithm selected"), 50, 50, 20,RED);
     } else {
@@ -160,17 +140,24 @@ void DrawGame() {
 
     // Draws button to shuffle the rectangles
     if (GuiButton({300, 350, 150, 50}, "Shuffle")) {
-        shuffle();
+        // shuffle();
         InitGame();
     }
 
+    // Draws button to start sorting
     if (GuiButton({500, 350, 150, 50}, "Sort")) {
+        if (completed) {
+            InitGame();
+        }
         if (ListViewIndexActive>-1) {
-            bubbleI=0;
-            bubbleJ=0;
+            counterI=0;
+            counterJ=0;
             sortingMode=true;
         }
     }
+
+    // Draws slider to customize speed of the sorting
+    GuiSliderBar({700, 500,70,30},"Quick","Slow",&SliderSortingSpeed,maxSpeed,minSpeed);
 
     // TO DELETE, just for testing purpose
     DrawText(TextFormat("DeltaTime: %f", frameTime), 300, 600, 20, RED);
@@ -211,36 +198,4 @@ bool delay(float seconds) {
         return true;
     }
     return false;
-}
-
-
-void bubbleSort() {
-    if (bubbleI > shownValues - 1) {
-        sortingMode = false;
-        completed=true;
-        return;
-    }
-
-    if (bubbleJ < shownValues - 1 - bubbleI) {
-        if (value[bubbleJ].height > value[bubbleJ + 1].height) {
-            float temp = value[bubbleJ].height;
-            value[bubbleJ].height = value[bubbleJ + 1].height;
-            value[bubbleJ + 1].height = temp;
-            value[bubbleJ].active=false;
-            value[bubbleJ+1].active=true;
-            swapped = true;
-        }
-        value[bubbleJ].active=false;
-        value[bubbleJ+1].active=true;
-        bubbleJ++;
-    } else {
-        if (!swapped) {
-            sortingMode = false;
-            completed=true;
-            return;
-        }
-        swapped = false;
-        bubbleJ = 0;
-        bubbleI++;
-    }
 }
