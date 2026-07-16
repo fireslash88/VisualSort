@@ -5,7 +5,7 @@
 inline bool swapped = false;
 
 inline void bubbleSort() {
-    if (counterI > shownValues - 1) {
+    if (counterI >= shownValues - 1) {
         sortingMode = false;
         completed=true;
         return;

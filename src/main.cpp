@@ -4,6 +4,7 @@
 #include "main.h"
 #include "bubbleSort.h"
 #include "selectionSort.h"
+#include "insertionSort.h"
 
 //Structures
 
@@ -35,7 +36,7 @@ bool delay(float seconds);
 //Algorithms functions
 
 int main() {
-    InitWindow(screenWidth, screenHeight, "Template Raylib");
+    InitWindow(screenWidth, screenHeight, "VisualSort");
     InitGame();
     SetTargetFPS(60);
 
@@ -50,6 +51,7 @@ int main() {
 
 //Initiate game variables;
 void InitGame() {
+    // CHECK IF ALL VARIABLES ARE INITIATED
 
     // Calculate how large is the width of every rectangle
     float rectSize = static_cast<float>(screenWidth) / static_cast<float>(shownValues);
@@ -88,6 +90,13 @@ void UpdateGame() {
                 selectionSort();
                 break;
             }
+            case 2: {
+                insertionSort();
+                break;
+            }
+            // case 3: {
+            //     break;
+            // }
             default: {
                 break;
             }
@@ -117,12 +126,12 @@ void DrawGame() {
             DrawRectangleV(position, size,value[i].color);
         }
 
-        // !! TO DELETE shows value of the rectangle's height
+        // TO-ADD, BUTTON TO DECIDE TO SHOW OR NOT THE VALUE ONLY AVAILABLE WHEN THERE'S TOT. VALUES
         DrawText(TextFormat("%.0f", value[i].height), value[i].x, value[i].y, 20,BLACK);
     }
 
-    // Draws box to insert the quantity of values to sort, minimum quantity of values is 5, maximum is decided by the constant. !!SHOULD ADD CONSTANT FOR MINIMUM TOO
-    if (GuiValueBox({200, 350, 60, 20}, "Values to sort", &newValues, 5, maxValues, ValueBox1EM)) {
+    // Draws box to insert the quantity of values to sort, minimum quantity of values is 5, maximum is decided by the constant.
+    if (GuiValueBox({200, 350, 60, 20}, "Values to sort", &newValues, minValues, maxValues, ValueBox1EM)) {
         ValueBox1EM = !ValueBox1EM;
         if (!ValueBox1EM) {
             shownValues = newValues;
@@ -131,7 +140,7 @@ void DrawGame() {
     }
 
     // Draws list view of all the algorithms available
-    GuiListView({700, 350, 200, 150}, "Bubble sort;Selection Sort;Test3", &ListViewIndexSel, &ListViewIndexActive);
+    GuiListView({700, 350, 200, 150}, "Bubble Sort;Selection Sort;Insertion Sort;Merge Sort", &ListViewIndexSel, &ListViewIndexActive);
     if (ListViewIndexActive == -1) {
         DrawText(TextFormat("No algorithm selected"), 50, 50, 20,RED);
     } else {
@@ -140,7 +149,6 @@ void DrawGame() {
 
     // Draws button to shuffle the rectangles
     if (GuiButton({300, 350, 150, 50}, "Shuffle")) {
-        // shuffle();
         InitGame();
     }
 
@@ -197,5 +205,6 @@ bool delay(float seconds) {
         frameTime = 0;
         return true;
     }
+
     return false;
 }

@@ -26,12 +26,14 @@ For this reason, I decided to learn more about sorting algorithms and create thi
 2. [x] Start the sorting process
 3. [x] Choose the number of values to display (up to 100)
 4. [ ] Compare two algorithms
-5. [ ] Change the sorting speed
+5. [X] Change the sorting speed
 6. [ ] Display a short description of the selected algorithm
 7. [ ] Add more sorting algorithms
 
 ### WIP: As of now, these are the algorithms implemented:
 - Bubble Sort
+- Selection Sort
+- Insertion Sort
 
 --- 
 

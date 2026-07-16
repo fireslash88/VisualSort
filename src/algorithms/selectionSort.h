@@ -6,7 +6,7 @@
 inline int minIndex=0;
 
 inline void selectionSort() {
-    if (counterI > shownValues - 1) {
+    if (counterI >= shownValues - 1) {
         sortingMode = false;
         completed = true;
         return;

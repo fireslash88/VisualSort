@@ -11,6 +11,7 @@ struct Values {
 };
 
 const int maxValues = 100;
+const int minValues = 5;
 
 inline Values value[maxValues];
 inline int shownValues = 5;
