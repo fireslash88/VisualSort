@@ -5,21 +5,25 @@
 #include "bubbleSort.h"
 #include "selectionSort.h"
 #include "insertionSort.h"
+#include "mergeSort.h"
+#include "quickSort.h"
 
 //Structures
 
-//Constants Variables
+//Constants for screen size
 const int screenWidth = 1080;
 const int screenHeight = 720;
 
+//Constants for sorting speed
 const float maxSpeed=0.1;
 const float minSpeed=2.0;
 
-//Global variables
-
 // GUI Variables
 bool ValueBox1EM = false;
+
 int ListViewIndexSel;
+
+bool CheckBoxText = false;
 
 //Main Functions
 void InitGame();
@@ -32,8 +36,6 @@ void UpdateDrawFrame();
 void shuffle();
 void completedAnimation();
 bool delay(float seconds);
-
-//Algorithms functions
 
 int main() {
     InitWindow(screenWidth, screenHeight, "VisualSort");
@@ -51,7 +53,6 @@ int main() {
 
 //Initiate game variables;
 void InitGame() {
-    // CHECK IF ALL VARIABLES ARE INITIATED
 
     // Calculate how large is the width of every rectangle
     float rectSize = static_cast<float>(screenWidth) / static_cast<float>(shownValues);
@@ -69,9 +70,17 @@ void InitGame() {
     // Shuffle the values at the start of the program
     shuffle();
 
+    frameTime=0.0;
+
     sortingMode = false;
     completed=false;
+
     completedAnimI=0;
+
+    //Reset statistics
+    arrayAccesses=0;
+    comparisonsPerformed=0;
+    swapsPerformed=0;
 }
 
 //Update Game
@@ -80,6 +89,7 @@ void UpdateGame() {
     // Updates the frameTime variables incrementing it by the FrameTime of the program
     frameTime += GetFrameTime();
 
+    //Decide what function to call and check if it needs to sort and if it waited enough
     if (sortingMode==true && delay(SliderSortingSpeed)) {
         switch (ListViewIndexActive) {
             case 0: {
@@ -97,12 +107,16 @@ void UpdateGame() {
             // case 3: {
             //     break;
             // }
+            // case 4: {
+            //     break;
+            // }
             default: {
                 break;
             }
         }
     }
 
+    //Plays animation if sorting is completed
     if (completed && delay(SliderSortingSpeed)) {
         completedAnimation();
     }
@@ -120,15 +134,16 @@ void DrawGame() {
         Vector2 position = {value[i].x, value[i].y - value[i].height};
         Vector2 size = {value[i].width, value[i].height};
 
+        //If the value is selected or being sorted, it becomes red
         if (value[i].active==true) {
             DrawRectangleV(position, size,RED);
         }else {
             DrawRectangleV(position, size,value[i].color);
         }
-
-        // TO-ADD, BUTTON TO DECIDE TO SHOW OR NOT THE VALUE ONLY AVAILABLE WHEN THERE'S TOT. VALUES
-        DrawText(TextFormat("%.0f", value[i].height), value[i].x, value[i].y, 20,BLACK);
     }
+
+    // Draws a line as a base for the rectangles
+    DrawLineBezier({0,302},{screenWidth,302},4,GRAY);
 
     // Draws box to insert the quantity of values to sort, minimum quantity of values is 5, maximum is decided by the constant.
     if (GuiValueBox({200, 350, 60, 20}, "Values to sort", &newValues, minValues, maxValues, ValueBox1EM)) {
@@ -140,12 +155,7 @@ void DrawGame() {
     }
 
     // Draws list view of all the algorithms available
-    GuiListView({700, 350, 200, 150}, "Bubble Sort;Selection Sort;Insertion Sort;Merge Sort", &ListViewIndexSel, &ListViewIndexActive);
-    if (ListViewIndexActive == -1) {
-        DrawText(TextFormat("No algorithm selected"), 50, 50, 20,RED);
-    } else {
-        DrawText(TextFormat("Value: %d", ListViewIndexActive), 50, 50, 20,RED);
-    }
+    GuiListView({700, 350, 200, 155}, "Bubble Sort;Selection Sort;Insertion Sort;Merge Sort;Quick Sort", &ListViewIndexSel, &ListViewIndexActive);
 
     // Draws button to shuffle the rectangles
     if (GuiButton({300, 350, 150, 50}, "Shuffle")) {
@@ -165,10 +175,21 @@ void DrawGame() {
     }
 
     // Draws slider to customize speed of the sorting
-    GuiSliderBar({700, 500,70,30},"Quick","Slow",&SliderSortingSpeed,maxSpeed,minSpeed);
+    GuiSliderBar({700, 550,70,30},"Quick","Slow",&SliderSortingSpeed,maxSpeed,minSpeed);
 
-    // TO DELETE, just for testing purpose
-    DrawText(TextFormat("DeltaTime: %f", frameTime), 300, 600, 20, RED);
+    GuiCheckBox({400,600,30,30},"Show number of the values",&CheckBoxText);
+    if (CheckBoxText && shownValues<=30){
+        for (int i = 0; i < shownValues; i++) {
+            DrawText(TextFormat("%.0f", value[i].height), value[i].x, value[i].y, 20,BLACK);
+        }
+    }
+    if (CheckBoxText && shownValues>30) {
+        DrawText("The number of the values are shown only if the values to sort are below or equal to 30",20,400,20,RED);
+    }
+
+    DrawText(TextFormat("Array accesses: %d",arrayAccesses),100,500,20,RED);
+    DrawText(TextFormat("Comparisons performed: %d",comparisonsPerformed),100,540,20,RED);
+    DrawText(TextFormat("Swaps performed: %d",swapsPerformed),100,580,20,RED);
 
     EndDrawing();
 }

@@ -12,16 +12,28 @@ inline void bubbleSort() {
     }
 
     if (counterJ < shownValues - 1 - counterI) {
+
+        arrayAccesses+=2;
+        comparisonsPerformed++;
+
         if (value[counterJ].height > value[counterJ + 1].height) {
+
+            arrayAccesses+=4;
+            swapsPerformed++;
+
             float temp = value[counterJ].height;
             value[counterJ].height = value[counterJ + 1].height;
             value[counterJ + 1].height = temp;
+
             value[counterJ].active=false;
             value[counterJ+1].active=true;
+
             swapped = true;
         }
+
         value[counterJ].active=false;
         value[counterJ+1].active=true;
+
         counterJ++;
     } else {
         if (!swapped) {
