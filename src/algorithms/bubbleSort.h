@@ -5,42 +5,42 @@
 inline bool swapped = false;
 
 inline void bubbleSort() {
-    if (counterI >= shownValues - 1) {
+    if (counterI >= value.size() - 1) {
         sortingMode = false;
-        completed=true;
+        completed = true;
         return;
     }
 
-    if (counterJ < shownValues - 1 - counterI) {
-
-        arrayAccesses+=2;
+    if (counterJ < value.size() - 1 - counterI) {
+        arrayAccesses += 2;
         comparisonsPerformed++;
 
-        if (value[counterJ].height > value[counterJ + 1].height) {
-
-            arrayAccesses+=4;
+        if (value.at(counterJ).height > value.at(counterJ + 1).height) {
+            arrayAccesses += 4;
             swapsPerformed++;
 
-            float temp = value[counterJ].height;
-            value[counterJ].height = value[counterJ + 1].height;
-            value[counterJ + 1].height = temp;
+            float temp = value.at(counterJ).height;
+            value.at(counterJ).height = value.at(counterJ + 1).height;
+            value.at(counterJ + 1).height = temp;
 
-            value[counterJ].active=false;
-            value[counterJ+1].active=true;
+            value.at(counterJ).active = false;
+            value.at(counterJ + 1).active = true;
 
             swapped = true;
         }
 
-        value[counterJ].active=false;
-        value[counterJ+1].active=true;
+        value.at(counterJ).active = false;
+        value.at(counterJ + 1).active = true;
 
         counterJ++;
     } else {
+
         if (!swapped) {
             sortingMode = false;
-            completed=true;
+            completed = true;
             return;
         }
+
         swapped = false;
         counterJ = 0;
         counterI++;

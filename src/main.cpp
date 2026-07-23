@@ -8,8 +8,6 @@
 #include "mergeSort.h"
 #include "quickSort.h"
 
-//Structures
-
 //Constants for screen size
 const int screenWidth = 1080;
 const int screenHeight = 720;
@@ -23,7 +21,7 @@ bool ValueBox1EM = false;
 
 int ListViewIndexSel;
 
-bool CheckBoxText = false;
+bool CheckBoxText = true;
 
 //Main Functions
 void InitGame();
@@ -55,16 +53,16 @@ int main() {
 void InitGame() {
 
     // Calculate how large is the width of every rectangle
-    float rectSize = static_cast<float>(screenWidth) / static_cast<float>(shownValues);
+    float rectSize = static_cast<float>(screenWidth) / static_cast<float>(value.size());
 
     // Initialize every rectangle of the values with the calculated width and some base settings
-    for (int i = 0; i < shownValues; i++) {
-        value[i].x = rectSize * static_cast<float>(i);
-        value[i].y = 300;
-        value[i].width = rectSize;
-        value[i].height = 0;
-        value[i].active = false;
-        value[i].color = BLACK;
+    for (int i = 0; i < value.size(); i++) {
+        value.at(i).x = rectSize * static_cast<float>(i);
+        value.at(i).y = 300;
+        value.at(i).width = rectSize;
+        value.at(i).height = 0;
+        value.at(i).active = false;
+        value.at(i).color = BLACK;
     }
 
     // Shuffle the values at the start of the program
@@ -130,15 +128,15 @@ void DrawGame() {
     GuiSetStyle(DEFAULT, TEXT_SIZE, 20);
 
     // Draws all the values as rectangles, uses Vectors.
-    for (int i = 0; i < shownValues; i++) {
-        Vector2 position = {value[i].x, value[i].y - value[i].height};
-        Vector2 size = {value[i].width, value[i].height};
+    for (int i = 0; i < value.size(); i++) {
+        Vector2 position = {value.at(i).x, value.at(i).y - value.at(i).height};
+        Vector2 size = {value.at(i).width, value.at(i).height};
 
         //If the value is selected or being sorted, it becomes red
-        if (value[i].active==true) {
+        if (value.at(i).active==true) {
             DrawRectangleV(position, size,RED);
         }else {
-            DrawRectangleV(position, size,value[i].color);
+            DrawRectangleV(position, size,value.at(i).color);
         }
     }
 
@@ -150,6 +148,7 @@ void DrawGame() {
         ValueBox1EM = !ValueBox1EM;
         if (!ValueBox1EM) {
             shownValues = newValues;
+            value.resize(shownValues);
             InitGame();
         }
     }
@@ -168,9 +167,23 @@ void DrawGame() {
             InitGame();
         }
         if (ListViewIndexActive>-1) {
-            counterI=0;
-            counterJ=0;
-            sortingMode=true;
+            //Exception for select sort
+            if (ListViewIndexActive==1) {
+                counterI=0;
+                counterJ=1;
+                sortingMode=true;
+            }
+            //Exception for insertion sort
+            else if (ListViewIndexActive==2) {
+                counterI=1;
+                counterJ=0;
+                sortingMode=true;
+            }
+            else {
+                counterI=0;
+                counterJ=0;
+                sortingMode=true;
+            }
         }
     }
 
@@ -178,13 +191,13 @@ void DrawGame() {
     GuiSliderBar({700, 550,70,30},"Quick","Slow",&SliderSortingSpeed,maxSpeed,minSpeed);
 
     GuiCheckBox({400,600,30,30},"Show number of the values",&CheckBoxText);
-    if (CheckBoxText && shownValues<=30){
-        for (int i = 0; i < shownValues; i++) {
-            DrawText(TextFormat("%.0f", value[i].height), value[i].x, value[i].y, 20,BLACK);
+    if (CheckBoxText && value.size()<=30){
+        for (int i = 0; i < value.size(); i++) {
+            DrawText(TextFormat("%.0f", value.at(i).height), value.at(i).x, value.at(i).y+5, 20,BLACK);
         }
     }
-    if (CheckBoxText && shownValues>30) {
-        DrawText("The number of the values are shown only if the values to sort are below or equal to 30",20,400,20,RED);
+    if (CheckBoxText && value.size()>30) {
+        DrawText("The number of the values are shown only if the values to sort are below or equal to 30",20,100,20,RED);
     }
 
     DrawText(TextFormat("Array accesses: %d",arrayAccesses),100,500,20,RED);
@@ -206,15 +219,15 @@ void UpdateDrawFrame() {
 
 //Shuffle the rectangle positions
 void shuffle() {
-    for (int i = 0; i < shownValues; i++) {
-        value[i].height = (GetRandomValue(1, 100));
+    for (int i = 0; i < value.size(); i++) {
+        value.at(i).height = (GetRandomValue(1, 100));
     }
 }
 
 void completedAnimation() {
-    if (completedAnimI<shownValues) {
-        value[completedAnimI].active=false;
-        value[completedAnimI].color=GREEN;
+    if (completedAnimI<value.size()) {
+        value.at(completedAnimI).active=false;
+        value.at(completedAnimI).color=GREEN;
     }
     completedAnimI++;
 }

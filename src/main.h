@@ -1,6 +1,8 @@
 #ifndef VISUALSORT_MAIN_H
 #define VISUALSORT_MAIN_H
 
+#include <vector>
+
 struct Values {
     float x;
     float y;
@@ -14,7 +16,8 @@ const int maxValues = 100;
 const int minValues = 5;
 
 //Declaration of the values
-inline Values value[maxValues];
+// inline Values value[maxValues];
+inline std::vector<Values> value(minValues);
 
 //Variables that decides how many values are shown
 //and how many to add

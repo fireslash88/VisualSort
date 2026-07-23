@@ -7,30 +7,48 @@ inline float key;
 inline bool inserting = false;
 
 inline void insertionSort() {
-    if (counterI >= shownValues) {
+    if (counterI >= value.size()) {
         sortingMode = false;
         completed = true;
         return;
     }
-    if (counterI == 0) {
-        counterI = 1;
-    }
 
-    value[counterI].active = true;
     if (!inserting) {
-        key = value[counterI].height;
+        key = value.at(counterI).height;
+
+        arrayAccesses++;
+
         counterJ = counterI - 1;
-        value[counterJ].active = false;
+
         inserting = true;
     }
 
-    if (counterJ >= 0 && value[counterJ].height > key) {
-        value[counterJ + 1].height = value[counterJ].height;
-        counterJ--;
-        return;
+    value.at(counterI).active = true;
+
+    if (counterJ>=0) {
+        arrayAccesses++;
+        comparisonsPerformed++;
+
+        if (counterJ >= 0 && (value.at(counterJ).height > key)) {
+
+            value.at(counterJ + 1).height = value.at(counterJ).height;
+
+            arrayAccesses += 2;
+
+            value.at(counterJ).active = false;
+
+            counterJ--;
+
+            return;
+        }
     }
-    value[counterJ + 1].height = key;
-    value[counterJ].active = false;
+
+    arrayAccesses++;
+
+    value.at(counterJ + 1).height = key;
+
+    value.at(counterJ+1).active = false;
+
     counterI++;
 
     inserting = false;
