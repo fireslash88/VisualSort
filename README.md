@@ -33,6 +33,7 @@ So, I decided to learn more about sorting algorithms and create this project to 
 - Bubble Sort
 - Selection Sort
 - Insertion Sort
+- Merge Sort
 
 ---
 ## How to run
@@ -44,7 +45,7 @@ WIP
 
 My idea was to create a project to learn things by myself and trying to do it without using AI.
 
-But unfortunately I had to use it in some parts to debug some things that I really didn't know how to fix.
+But unfortunately I had to use it in some parts to help me out for some things that I really didn't know how to fix.
 
 The fixes I made using AI are commented in the code with //AI: as a prefix.
 

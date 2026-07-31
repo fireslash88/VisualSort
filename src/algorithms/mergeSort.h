@@ -44,6 +44,9 @@ inline void merge() {
     }
 
     if (counterI<L.size() && counterJ<R.size()) {
+
+        comparisonsPerformed++;
+
         if (L.at(counterI) <= R.at(counterJ)) {
             value.at(k).height= L.at(counterI);
             counterI++;
@@ -51,6 +54,9 @@ inline void merge() {
             value.at(k).height = R.at(counterJ);
             counterJ++;
         }
+
+        arrayAccesses++;
+
         k++;
         return;
     }
@@ -58,6 +64,9 @@ inline void merge() {
     if (counterI<L.size()) {
         value.at(k).height=L.at(counterI);
         counterI++;
+
+        arrayAccesses++;
+
         k++;
         return;
     }
@@ -65,6 +74,9 @@ inline void merge() {
     if (counterJ<R.size()) {
         value.at(k).height = R.at(counterJ);
         counterJ++;
+
+        arrayAccesses++;
+
         k++;
         return;
     }
