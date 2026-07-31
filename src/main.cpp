@@ -102,9 +102,10 @@ void UpdateGame() {
                 insertionSort();
                 break;
             }
-            // case 3: {
-            //     break;
-            // }
+            case 3: {
+                mergeSort();
+                break;
+            }
             // case 4: {
             //     break;
             // }
@@ -144,11 +145,11 @@ void DrawGame() {
     DrawLineBezier({0,302},{screenWidth,302},4,GRAY);
 
     // Draws box to insert the quantity of values to sort, minimum quantity of values is 5, maximum is decided by the constant.
-    if (GuiValueBox({200, 350, 60, 20}, "Values to sort", &newValues, minValues, maxValues, ValueBox1EM)) {
+    if (GuiValueBox({200, 350, 60, 20}, "Values to sort", &newLength, minValues, maxValues, ValueBox1EM)) {
         ValueBox1EM = !ValueBox1EM;
         if (!ValueBox1EM) {
-            shownValues = newValues;
-            value.resize(shownValues);
+            vectorLength = newLength;
+            value.resize(vectorLength);
             InitGame();
         }
     }

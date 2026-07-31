@@ -21,8 +21,8 @@ inline std::vector<Values> value(minValues);
 
 //Variables that decides how many values are shown
 //and how many to add
-inline int shownValues = 5;
-inline int newValues = 0;
+inline int vectorLength = minValues;
+inline int newLength = 0;
 
 //Statistics of the algorithms
 inline int arrayAccesses = 0;
