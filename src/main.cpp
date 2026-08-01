@@ -6,19 +6,20 @@
 #include "selectionSort.h"
 #include "insertionSort.h"
 #include "mergeSort.h"
-#include "quickSort.h"
+// #include "quickSort.h"
 
 //Constants for screen size
 const int screenWidth = 1080;
 const int screenHeight = 720;
 
 //Constants for sorting speed
-const float maxSpeed=0.1;
+const float maxSpeed=0.01;
 const float minSpeed=2.0;
 
 // GUI Variables
 bool ValueBox1EM = false;
 
+float SliderSortingSpeed=0.5;
 int ListViewIndexSel;
 
 bool CheckBoxText = true;
@@ -27,7 +28,6 @@ bool CheckBoxText = true;
 void InitGame();
 void UpdateGame();
 void DrawGame();
-void UnloadGame();
 void UpdateDrawFrame();
 
 //Other functions
@@ -43,7 +43,6 @@ int main() {
     while (!WindowShouldClose()) {
         UpdateDrawFrame();
     }
-    UnloadGame();
 
     CloseWindow();
     return 0;
@@ -191,6 +190,7 @@ void DrawGame() {
     // Draws slider to customize speed of the sorting
     GuiSliderBar({700, 550,70,30},"Quick","Slow",&SliderSortingSpeed,maxSpeed,minSpeed);
 
+    // Draws checkbox to show/hide the number of the values
     GuiCheckBox({400,600,30,30},"Show number of the values",&CheckBoxText);
     if (CheckBoxText && value.size()<=30){
         for (int i = 0; i < value.size(); i++) {
@@ -201,15 +201,12 @@ void DrawGame() {
         DrawText("The number of the values are shown only if the values to sort are below or equal to 30",20,100,20,RED);
     }
 
+    // Draws the statistics of the sorting algorithm
     DrawText(TextFormat("Array accesses: %d",arrayAccesses),100,500,20,RED);
     DrawText(TextFormat("Comparisons performed: %d",comparisonsPerformed),100,540,20,RED);
     DrawText(TextFormat("Swaps performed: %d",swapsPerformed),100,580,20,RED);
 
     EndDrawing();
-}
-
-//Unload game (useless for now)
-void UnloadGame() {
 }
 
 //Update and draw
@@ -225,6 +222,7 @@ void shuffle() {
     }
 }
 
+//Animation that plays when a sorting is completed
 void completedAnimation() {
     if (completedAnimI<value.size()) {
         value.at(completedAnimI).active=false;

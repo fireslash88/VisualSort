@@ -45,6 +45,5 @@ inline float frameTime = 0.0;
 
 //Variables for the interactive GUI
 inline int ListViewIndexActive = -1;
-inline float SliderSortingSpeed;
 
 #endif //VISUALSORT_MAIN_H

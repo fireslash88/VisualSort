@@ -29,9 +29,11 @@ inline void merge() {
         R.resize(n2);
 
         for (int i=0;i<n1;i++) {
+            arrayAccesses++;
             L.at(i)=value.at(left+i).height;
         }
         for (int j=0;j<n2;j++) {
+            arrayAccesses++;
             R.at(j)=value.at(mid+1+j).height;
         }
 
