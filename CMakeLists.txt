@@ -1,8 +1,15 @@
 cmake_minimum_required(VERSION 3.11) # FetchContent is available in 3.11+
 project(VisualSort)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/bin/Release)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/bin/Debug)
 
 # Dependencies
 set(RAYLIB_VERSION 6.0)
@@ -28,7 +35,6 @@ add_executable(${PROJECT_NAME}
         src/main.cpp
         src/main.h
 )
-#set(raylib_VERBOSE 1)
 
 target_include_directories (${PROJECT_NAME} PRIVATE
         src/libraries/raygui/src/
@@ -37,15 +43,9 @@ target_include_directories (${PROJECT_NAME} PRIVATE
 
 target_link_libraries(${PROJECT_NAME} raylib)
 
-# Web Configurations
-if (${PLATFORM} STREQUAL "Web")
-    set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".html") # Tell Emscripten to build an example.html file.
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s USE_GLFW=3 -s ASSERTIONS=1 -s WASM=1 -s ASYNCIFY -s GL_ENABLE_GET_PROC_ADDRESS=1")
-endif()
-
-# Checks if OSX and links appropriate frameworks (Only required on MacOS)
-if (APPLE)
-    target_link_libraries(${PROJECT_NAME} "-framework IOKit")
-    target_link_libraries(${PROJECT_NAME} "-framework Cocoa")
-    target_link_libraries(${PROJECT_NAME} "-framework OpenGL")
+if(WIN32)
+    target_link_options(${PROJECT_NAME} PRIVATE
+            "$<$<CONFIG:Release>:/SUBSYSTEM:WINDOWS>"
+            "$<$<CONFIG:Release>:/ENTRY:mainCRTStartup>"
+    )
 endif()
