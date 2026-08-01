@@ -95,6 +95,13 @@ inline void mergeSort() {
 
         mergeSize=1;
         left=0;
+        mid=0;
+        right=0;
+        k=0;
+
+        L.clear();
+        R.clear();
+
         return;
     }
 

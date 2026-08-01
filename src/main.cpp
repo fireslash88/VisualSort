@@ -6,7 +6,6 @@
 #include "selectionSort.h"
 #include "insertionSort.h"
 #include "mergeSort.h"
-// #include "quickSort.h"
 
 //Constants for screen size
 const int screenWidth = 1080;
@@ -105,9 +104,6 @@ void UpdateGame() {
                 mergeSort();
                 break;
             }
-            // case 4: {
-            //     break;
-            // }
             default: {
                 break;
             }
@@ -144,7 +140,7 @@ void DrawGame() {
     DrawLineBezier({0,302},{screenWidth,302},4,GRAY);
 
     // Draws box to insert the quantity of values to sort, minimum quantity of values is 5, maximum is decided by the constant.
-    if (GuiValueBox({200, 350, 60, 20}, "Values to sort", &newLength, minValues, maxValues, ValueBox1EM)) {
+    if (GuiValueBox({170, 370, 60, 20}, "Values to sort", &newLength, minValues, maxValues, ValueBox1EM)) {
         ValueBox1EM = !ValueBox1EM;
         if (!ValueBox1EM) {
             vectorLength = newLength;
@@ -154,15 +150,27 @@ void DrawGame() {
     }
 
     // Draws list view of all the algorithms available
-    GuiListView({700, 350, 200, 155}, "Bubble Sort;Selection Sort;Insertion Sort;Merge Sort;Quick Sort", &ListViewIndexSel, &ListViewIndexActive);
+    DrawText("Algorithms", 30, 420, 20, GRAY);
+
+    int DidAlgorithmChange=
+        GuiListView({30, 450, 200, 125},
+            "Bubble Sort;Selection Sort;Insertion Sort;Merge Sort",
+            &ListViewIndexSel,
+            &ListViewIndexActive)
+    ;
+
+    if (DidAlgorithmChange) {
+        sortingMode=false;
+        InitGame();
+    }
 
     // Draws button to shuffle the rectangles
-    if (GuiButton({300, 350, 150, 50}, "Shuffle")) {
+    if (GuiButton({300, 360, 150, 50}, "Shuffle")) {
         InitGame();
     }
 
     // Draws button to start sorting
-    if (GuiButton({500, 350, 150, 50}, "Sort")) {
+    if (GuiButton({300, 440, 150, 50}, "Sort") && !completed) {
         if (completed) {
             InitGame();
         }
@@ -188,23 +196,27 @@ void DrawGame() {
     }
 
     // Draws slider to customize speed of the sorting
-    GuiSliderBar({700, 550,70,30},"Quick","Slow",&SliderSortingSpeed,maxSpeed,minSpeed);
+    DrawText("Sorting speed",295,540,20,GRAY);
+    GuiSliderBar({340, 570,70,30},"Quick","Slow",&SliderSortingSpeed,maxSpeed,minSpeed);
+    DrawText("(Min: 0.01s, Max: 2.0s)",290,610,20,GRAY);
+
 
     // Draws checkbox to show/hide the number of the values
-    GuiCheckBox({400,600,30,30},"Show number of the values",&CheckBoxText);
+    GuiCheckBox({30,650,30,30},"Show number of the values",&CheckBoxText);
     if (CheckBoxText && value.size()<=30){
         for (int i = 0; i < value.size(); i++) {
             DrawText(TextFormat("%.0f", value.at(i).height), value.at(i).x, value.at(i).y+5, 20,BLACK);
         }
     }
     if (CheckBoxText && value.size()>30) {
-        DrawText("The number of the values are shown only if the values to sort are below or equal to 30",20,100,20,RED);
+        DrawText("The number of the values are shown only if the values to sort are below or equal to 30!" ,30,150,20,RED);
+        DrawText("Uncheck the box below!", 30 ,180,20, RED);
     }
 
     // Draws the statistics of the sorting algorithm
-    DrawText(TextFormat("Array accesses: %d",arrayAccesses),100,500,20,RED);
-    DrawText(TextFormat("Comparisons performed: %d",comparisonsPerformed),100,540,20,RED);
-    DrawText(TextFormat("Swaps performed: %d",swapsPerformed),100,580,20,RED);
+    DrawText(TextFormat("Array accesses: %d",arrayAccesses),30,30,20,GRAY);
+    DrawText(TextFormat("Comparisons performed: %d",comparisonsPerformed),30,60,20,GRAY);
+    DrawText(TextFormat("Swaps performed: %d",swapsPerformed),30,90,20,GRAY);
 
     EndDrawing();
 }
