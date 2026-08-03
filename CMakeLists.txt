@@ -44,8 +44,14 @@ target_include_directories (${PROJECT_NAME} PRIVATE
 target_link_libraries(${PROJECT_NAME} raylib)
 
 if(WIN32)
+  if(MSVC)
     target_link_options(${PROJECT_NAME} PRIVATE
             "$<$<CONFIG:Release>:/SUBSYSTEM:WINDOWS>"
             "$<$<CONFIG:Release>:/ENTRY:mainCRTStartup>"
     )
+  elseif(MINGW)
+    target_link_options(${PROJECT_NAME} PRIVATE
+            "$<$<CONFIG:Release>:-mwindows>"
+    )
+  endif()
 endif()
