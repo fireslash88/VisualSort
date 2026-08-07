@@ -29,7 +29,15 @@ inline int mergeSize=1;
 inline bool copying=true;
 inline bool merging=false;
 
+inline void clearActive(){
+    for (int i=0;i<value.size();i++) {
+        value.at(i).active=false;
+    }
+}
+
 inline void merge() {
+
+    clearActive();
 
     if (copying) {
 
@@ -42,10 +50,14 @@ inline void merge() {
         for (int i=0;i<n1;i++) {
             arrayAccesses++;
             L.at(i)=value.at(left+i).height;
+
+            value.at(left + i).active = true;
         }
         for (int j=0;j<n2;j++) {
             arrayAccesses++;
             R.at(j)=value.at(mid+1+j).height;
+
+            value.at(mid + 1 + j).active = true;
         }
 
         counterI=0;
@@ -57,6 +69,12 @@ inline void merge() {
     }
 
     if (counterI<L.size() && counterJ<R.size()) {
+
+        clearActive();
+
+        value.at(left + counterI).active = true;
+        value.at(mid + 1 + counterJ).active = true;
+        value.at(k).active = true;
 
         comparisonsPerformed++;
 
@@ -75,6 +93,12 @@ inline void merge() {
     }
 
     if (counterI<L.size()) {
+
+        clearActive();
+
+        value.at(left + counterI).active = true;
+        value.at(k).active = true;
+
         value.at(k).height=L.at(counterI);
         counterI++;
 
@@ -85,6 +109,12 @@ inline void merge() {
     }
 
     if (counterJ<R.size()) {
+
+        clearActive();
+
+        value.at(mid + 1 + counterJ).active = true;
+        value.at(k).active = true;
+
         value.at(k).height = R.at(counterJ);
         counterJ++;
 
@@ -93,6 +123,8 @@ inline void merge() {
         k++;
         return;
     }
+
+    clearActive();
 
     copying=true;
 }

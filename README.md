@@ -35,6 +35,22 @@ So, I decided to learn more about sorting algorithms and create this project to 
 - Merge Sort
 
 ---
+## Screenshots
+
+![Image not found](images/image2.png)
+![Image not found](images/image3.png)
+
+
+---
+## Platforms
+
+
+| Platforms | Availability  |
+|----------:|---------------|
+|   Windows | Available     |
+|     Linux | Not Available |
+|     MacOS | Not Available |
+
 ## Compiling
 
 ### Requirements
@@ -75,8 +91,6 @@ After doing so, if you go inside the VisualSort folder, you'll see a "bin" folde
 The compiler generates the folder automatically while compiling so **don't worry if you don't see both.** 
 
 It generates the folder associated to the build type you chose!
-
-
 
 ---
 ## AI Notice
