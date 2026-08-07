@@ -1,3 +1,5 @@
+#include <string>
+
 #include "raylib.h"
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
@@ -14,6 +16,12 @@ const int screenHeight = 720;
 //Constants for sorting speed
 const float maxSpeed=0.01;
 const float minSpeed=2.0;
+
+//Starter description
+std::string starterDescription="This software helps you to learn\n"
+                               "sorting algorithms by visualizing them!\n"
+                           "Select an algorithm and press Sort \n"
+                           "to start!";
 
 // GUI Variables
 bool ValueBox1EM = false;
@@ -63,6 +71,8 @@ void InitGame() {
         value.at(i).color = BLACK;
     }
 
+    description=starterDescription;
+
     // Shuffle the values at the start of the program
     shuffle();
 
@@ -90,18 +100,22 @@ void UpdateGame() {
         switch (ListViewIndexActive) {
             case 0: {
                 bubbleSort();
+                description=bubbleSortDescription;
                 break;
             }
             case 1: {
                 selectionSort();
+                description=selectionSortDescription;
                 break;
             }
             case 2: {
                 insertionSort();
+                description=insertionSortDescription;
                 break;
             }
             case 3: {
                 mergeSort();
+                description=mergeSortDescription;
                 break;
             }
             default: {
@@ -169,11 +183,12 @@ void DrawGame() {
         InitGame();
     }
 
+    if (sortingMode) {
+        GuiSetState(STATE_DISABLED);
+    }
+
     // Draws button to start sorting
-    if (GuiButton({300, 440, 150, 50}, "Sort") && !completed) {
-        if (completed) {
-            InitGame();
-        }
+    if (GuiButton({500, 360, 150, 50}, "Sort") && !completed) {
         if (ListViewIndexActive>-1) {
             //Exception for select sort
             if (ListViewIndexActive==1) {
@@ -195,10 +210,12 @@ void DrawGame() {
         }
     }
 
+    GuiSetState(STATE_NORMAL);
+
     // Draws slider to customize speed of the sorting
-    DrawText("Sorting speed",295,540,20,GRAY);
-    GuiSliderBar({340, 570,70,30},"Quick","Slow",&SliderSortingSpeed,maxSpeed,minSpeed);
-    DrawText("(Min: 0.01s, Max: 2.0s)",290,610,20,GRAY);
+    DrawText("Sorting speed",295,470,20,GRAY);
+    GuiSliderBar({340, 500,70,30},"Quick","Slow",&SliderSortingSpeed,maxSpeed,minSpeed);
+    DrawText("(Min: 0.01s, Max: 2.0s)",290,540,20,GRAY);
 
 
     // Draws checkbox to show/hide the number of the values
@@ -212,6 +229,8 @@ void DrawGame() {
         DrawText("The number of the values are shown only if the values to sort are below or equal to 30!" ,30,150,20,RED);
         DrawText("Uncheck the box below!", 30 ,180,20, RED);
     }
+
+    GuiTextBox({700,370,360,320},description.data(),1,false);
 
     // Draws the statistics of the sorting algorithm
     DrawText(TextFormat("Array accesses: %d",arrayAccesses),30,30,20,GRAY);

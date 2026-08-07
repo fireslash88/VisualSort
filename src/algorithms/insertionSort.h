@@ -6,6 +6,16 @@
 inline float key;
 inline bool inserting = false;
 
+inline  std::string insertionSortDescription="This is Insertion sort!\n"
+                                             "\n"
+                                             "It works by inserting each\n"
+                                             "value of an unsorted list into\n"
+                                             "its correct position in a sorted list!\n"
+                                             "\n"
+                                             "Pros: It's simple to implement and\n"
+                                             "fast for small amount of data\n"
+                                             "Cons: Inefficient and slow for large\n"
+                                             "amount of data";
 inline void insertionSort() {
     if (counterI >= value.size()) {
         sortingMode = false;

@@ -8,6 +8,17 @@
 inline std::vector<float> L;
 inline std::vector<float> R;
 
+inline std::string mergeSortDescription="This is Merge Sort!\n"
+                                        "\n"
+                                        "It works by recursively dividing\n"
+                                        "the array into halves until each\n"
+                                        "sub-array contains a single value,\n"
+                                        "then merges them back together\n"
+                                        "into a sorted array!\n"
+                                        "\n"
+                                        "Pros: Fast for large amount of data\n"
+                                        "Cons: Requires additional memory\n";
+
 inline int left=0;
 inline int mid=0;
 inline int right=0;

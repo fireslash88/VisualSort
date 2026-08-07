@@ -2,6 +2,7 @@
 #define VISUALSORT_MAIN_H
 
 #include <vector>
+#include <string>
 
 struct Values {
     float x;
@@ -45,5 +46,8 @@ inline float frameTime = 0.0;
 
 //Variables for the interactive GUI
 inline int ListViewIndexActive = -1;
+
+//Text variables
+inline std::string description;
 
 #endif //VISUALSORT_MAIN_H

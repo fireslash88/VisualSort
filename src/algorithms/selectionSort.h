@@ -5,6 +5,16 @@
 
 inline int minIndex=0;
 
+inline std::string selectionSortDescription="This is Selection sort!\n"
+                                      "\n"
+                                      "It works by repeatedly selecting\n"
+                                      "the smallest value from the\n"
+                                      "unsorted portion and swapping it\n"
+                                      "with the first unsorted value!\n"
+                                      "\n"
+                                      "Pros: Easy to understand\n"
+                                      "Cons: Slower compared to others";
+
 inline void selectionSort() {
     if (counterI >= value.size()-1) {
         sortingMode = false;

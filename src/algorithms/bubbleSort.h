@@ -4,6 +4,16 @@
 
 inline bool swapped = false;
 
+inline std::string bubbleSortDescription="This is Bubble sort!\n"
+                                   "\n"
+                                   "This algorithm is simple, it\n"
+                                    "works by repeatedly swapping\n"
+                                   "the adjacent values if\n"
+                                   "they are in the wrong order!\n"
+                                   "\n"
+                                   "Pros: Simple to implement\n"
+                                   "Cons: Slow for large amount of data";
+
 inline void bubbleSort() {
     if (counterI >= value.size() - 1) {
         sortingMode = false;
