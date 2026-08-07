@@ -23,22 +23,60 @@ So, I decided to learn more about sorting algorithms and create this project to 
 1. [x] Shuffle the values
 2. [x] Start the sorting process
 3. [x] Choose the number of values to display (up to 100)
-4. [ ] Compare two algorithms
-5. [X] Change the sorting speed
-6. [ ] Display a short description of the selected algorithm
-7. [X] Display statistics of the used algorithm
-8. [ ] Add more sorting algorithms
+4. [X] Change the sorting speed
+5. [X] Display a short description of the selected algorithm
+6. [X] Display statistics of the used algorithm
+7. [X] Add more sorting algorithms
 
-### WIP: As of now, these are the algorithms implemented:
+### As of now, these are the algorithms implemented:
 - Bubble Sort
 - Selection Sort
 - Insertion Sort
 - Merge Sort
 
 ---
-## How to run
+## Compiling
 
-WIP
+### Requirements
+- C++ Compiler (GCC/Clang)
+- CMake 3.20 or newer
+- Git
+
+### Clone the repository
+
+```
+git clone https://github.com/fireslash88/VisualSort.git
+cd VisualSort
+```
+
+### Create a build directory
+```
+mkdir build
+cd build
+```
+
+### Generate the build files
+```
+cmake ..
+```
+
+### Compile the software
+**IMPORTANT!**
+
+To compile a debug build, use this command. But by doing so, the program will start and open raylib's debug window.
+```
+cmake --build . 
+```
+Use this command to compile a release build without having the raylib's debug window!
+```
+cmake --build . --config Release
+```
+After doing so, if you go inside the VisualSort folder, you'll see a "bin" folder with inside a folder for the Debug program and then another one for the Release program.
+The compiler generates the folder automatically while compiling so **don't worry if you don't see both.** 
+
+It generates the folder associated to the build type you chose!
+
+
 
 ---
 ## AI Notice
