@@ -4,5 +4,6 @@ build/*
 
 *.exe
 *.pdb
+*.ilk
 
 .idea/*

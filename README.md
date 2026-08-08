@@ -53,8 +53,8 @@ So, I decided to learn more about sorting algorithms and create this project to 
 
 ## Compiling
 
-### Requirements
-- C++ Compiler (GCC/Clang)
+### Build Requirements
+- C++ Compiler (MinGW-w64 or MSVC)
 - CMake 3.20 or newer
 - Git
 
